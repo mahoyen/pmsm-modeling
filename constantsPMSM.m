@@ -1,3 +1,12 @@
+%% Motor data
+nom_rpm = 3500;
+
+%% Per Unit
+V_b = 48; %V
+I_b = 10; %A max current
+Z_b = V_b/I_b;
+w_b = nom_rpm*2*pi/60; % rad/s
+
 %% References
 
 w_r_ref = 10;
