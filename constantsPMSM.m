@@ -33,9 +33,22 @@ x_q = x_s_sigma + x_aq;
 flux_m = 1;
 
 %% Current Controller
+T_sum = 1;
+r_s = 1;
+r_q = 1;
 
-K_pcd = 1;
+T_d = x_d/(w_b*r_s);
+T_i_d = T_d;
+
+T_1_q = x_q/(w_b*r_q); 
+T_i_q = T_1_q;
+
+K_p_denom = 2*w_b*T_sum;
+K_p_d = x_d/K_p_denom;
+K_p_q = x_q/K_p_denom;
+
+K_pcd = K_p_d;
 K_icd = 1;
 
-K_pcq = 1;
+K_pcq = K_p_q;
 K_icq = 1;
