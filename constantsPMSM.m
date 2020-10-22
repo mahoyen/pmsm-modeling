@@ -1,11 +1,36 @@
+%% Conversion numbers
+rpm2radps = 2*pi/60;
+
 %% Motor data
-nom_rpm = 3500;
+nom_rpm = 3500; %rpm
+nom_torque = 3.3; %Nm
+nom_efficiency = 0.926;
+voltage_constant = 8.5/1000; %V/rpm
+torque_constant = 0.09; %Nm/A
+stator_inductance = 4/1000000; %H
+stator_resistance = 35/1000; %Ohm
+
+%% Derived motor data
+
+nom_power = (nom_rpm * rpm2radps * nom_torque);
+nom_elec_power = nom_power / nom_efficiency;
+nom_current = nom_elec_power/torque_constant;
+nom_voltage = voltage_constant * nom_rpm;
+pm_psi = nom_voltage/nom_rpm;
+
+%% Missing Motor data
+n_pole_pairs = 4;
+inertia = 0.0027; % kgm^2
+viscous_damping = 4.924e-4; % Nm/rad/s
+static_friction = 0; % Nm
 
 %% Per Unit
-V_b = 48; %V
-I_b = 7; %A RMS max current
-Z_b = V_b/I_b;
-w_b = nom_rpm*2*pi/60; % rad/s
+V_b = sqrt(2)/sqrt(3) * nom_voltage; % Base Voltage
+I_b = sqrt(2) * nom_current; % base Current
+S_b = 3/2 * V_b * I_b; % Apparant Base Power
+Z_b = V_b/I_b; % base impediance
+w_b = nom_rpm*2*pi/60; % base angular speed
+psi_b = V_b/w_b;
 
 %% References
 
