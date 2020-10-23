@@ -9,20 +9,31 @@ voltage_constant = 8.5/1000; %V/rpm
 torque_constant = 0.09; %Nm/A
 stator_inductance = 4/1000000; %H
 stator_resistance = 35/1000; %Ohm
+total_mass = 0.7; % kg
+outer_rotor_diameter = 0.1; %m
+
+%% Missing Motor data
+n_pole_pairs = 32;
+
+viscous_damping = 4.924e-4; % Nm/rad/s
+static_friction = 0; % Nm
+rotor_fraction = 0.5;
+inner_rotor_diameter = 0.08; %m
 
 %% Derived motor data
+outer_rotor_radius = outer_rotor_diameter/2;
+inner_rotor_radius = inner_rotor_diameter/2;
+normalised_thickness_ratio = (outer_rotor_radius-inner_rotor_radius)...
+    /outer_rotor_radius;
+rotor_mass = total_mass * rotor_fraction;
+rotor_inertia = rotor_mass * outer_rotor_radius^2 * ...
+    (1-normalised_thickness_ratio + (normalised_thickness_ratio^2)/2);
 
 nom_power = (nom_rpm * rpm2radps * nom_torque);
 nom_elec_power = nom_power / nom_efficiency;
-nom_current = nom_elec_power/torque_constant;
+nom_current = nom_torque / torque_constant; 
 nom_voltage = voltage_constant * nom_rpm;
 pm_psi = nom_voltage/nom_rpm;
-
-%% Missing Motor data
-n_pole_pairs = 4;
-inertia = 0.0027; % kgm^2
-viscous_damping = 4.924e-4; % Nm/rad/s
-static_friction = 0; % Nm
 
 %% Per Unit
 V_b = sqrt(2)/sqrt(3) * nom_voltage; % Base Voltage
